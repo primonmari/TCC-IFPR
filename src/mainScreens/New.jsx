@@ -30,7 +30,7 @@ export default function New(){
     </View>
   );
 }
-
+//Exemplo
 const styles = StyleSheet.create({
   container: {
     flex: 1,
