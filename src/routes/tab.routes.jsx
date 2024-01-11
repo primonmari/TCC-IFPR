@@ -1,4 +1,4 @@
-// Importa as bibliotecas necessárias do React e do React Navigation
+// Importa as bibliotecas 
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, Foundation, Ionicons } from '@expo/vector-icons';
