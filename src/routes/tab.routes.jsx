@@ -1,92 +1,123 @@
+// Importa as bibliotecas necessárias do React e do React Navigation
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {MaterialCommunityIcons, Entypo,Foundation,Ionicons} from '@expo/vector-icons';
+import { MaterialCommunityIcons, Foundation, Ionicons } from '@expo/vector-icons';
 
+// Importa o componente View do React Native
+import { View } from 'react-native';
+
+// Importa as telas principais do aplicativo
 import HomeScreen from '../mainScreens/HomeScreen';
 import Appointments from '../mainScreens/Appointments';
 import New from '../mainScreens/New';
 import Notifications from '../mainScreens/Notifications';
 import General from '../mainScreens/General';
 
-//criar um navegador de guias de navegação inferior usando a biblioteca de navegação React Navigation. 
-//A função createBottomTabNavigator é uma função fornecida pelo React Navigation 
+// Cria um navegador de abas inferior usando createBottomTabNavigator
 const Tab = createBottomTabNavigator();
 
-export default function TabRoutes() {
+// Define o componente funcional TabRoutes
+const TabRoutes = () => {
+  // Retorna a configuração do navegador de abas
   return (
-    <Tab.Navigator // componente fornecido pelo pacote @react-navigation/bottom-tabs. Cria um navegador de guias 
-    //de navegação inferior (bottom tab navigation) 
-      initialRouteName="Obras" //inicia na rota home
-      screenOptions={{
-        tabBarActiveTintColor: '#00B029', //cor verde ao clicar
-        headerStyle: { //estilo pro meu header
-          backgroundColor: '#00B029', // Defina a cor de fundo verde do cabeçalho para todas as telas
+    <Tab.Navigator
+      initialRouteName="Obras"
+      screenOptions={({ route }) => ({
+        tabBarActiveTintColor: '#00B029',  // Cor do ícone ativo
+        headerStyle: {
+          backgroundColor: '#00B029',  // Cor de fundo do cabeçalho
         },
-        headerTintColor: '#ffffff', // Define a cor do texto do cabeçalho para todas as telas
+        headerTintColor: '#ffffff',  // Cor do texto do cabeçalho
         headerTitleStyle: {
-          fontSize: 18, // Defina o tamanho do texto do cabeçalho para todas as telas
+          fontSize: 18,  // Tamanho do texto do cabeçalho
         },
-      }}
+        tabBarIcon: ({ color, size }) => {
+          if (route.name === 'Adicionar') {
+            // Renderiza um ícone personalizado para a guia "Adicionar"
+            return (
+              <NewTabButton />
+            );
+          }
+          // Renderiza os outros ícones padrão para as demais guias
+          return getDefaultTabIcon(route, color, size);
+        },
+      })}
     >
-      <Tab.Screen //usado dentro do <Tab.Navigator> para definir uma guia individual
-        name="Obras" //Rota
-        component={HomeScreen} //Componente renderizado
+      {/* Configuração da tela "Obras" */}
+      <Tab.Screen
+        name="Obras"
+        component={HomeScreen}
         options={{
-          tabBarLabel: 'Obras', //Nome abaixo do icone 
-          tabBarIcon: ({ color, size }) => ( //params cor e tamanho
-            <MaterialCommunityIcons name="home" color={color} size={size} /> //biblioteca icone
-          ),
-          title: 'Obras', // Nome do cabeçalho da rota
+          tabBarLabel: 'Obras',  // Rótulo na aba
+          title: 'Obras',  // Título da tela
         }}
       />
-      <Tab.Screen //usado dentro do <Tab.Navigator> para definir uma guia individual
+      {/* Configuração da tela "Apontamentos" */}
+      <Tab.Screen
         name="Apontamentos"
         component={Appointments}
         options={{
-          tabBarLabel: 'Apontamentos',
-          tabBarIcon: ({ color, size }) => (
-            <Foundation name="clipboard-notes" color={color} size={size} />
-          ),
-          title: 'Apontamentos',
+          tabBarLabel: 'Apontamentos',  // Rótulo na aba
+          title: 'Apontamentos',  // Título da tela
         }}
       />
+      {/* Configuração da tela "Adicionar" */}
       <Tab.Screen
         name="Adicionar"
         component={New}
         options={{
-          tabBarLabel: 'Adicionar',
-          tabBarIcon: ({ color, size }) => (
-            <Entypo name="circle-with-plus" color={"#0B006B"} size={75} 
-            style={{ marginTop: -34 }} />
-          ),
-          title: 'Adicionar',
+          tabBarLabel: '',  // Rótulo na aba (vazio para esconder)
           tabBarLabelStyle: {
-            color: 'gray', // Cor azul para o texto do tabBarLabel específico para essa guia
+            color: 'gray',  // Cor do rótulo
           },
         }}
       />
+      {/* Configuração da tela "Notificações" */}
       <Tab.Screen
         name="Notificacoes"
         component={Notifications}
         options={{
-          tabBarLabel: 'Notificações',
-          tabBarIcon: ({ color, size }) => (
-           <Ionicons name="notifications"  color={color} size={size} />
-          ),
-          title: 'Notificações',
+          tabBarLabel: 'Notificações',  // Rótulo na aba
+          title: 'Notificações',  // Título da tela
         }}
       />
+      {/* Configuração da tela "Geral" */}
       <Tab.Screen
         name="Geral"
         component={General}
         options={{
-          tabBarLabel: 'Geral',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="ios-open" color={color} size={size} />
-          ),
-          title: 'Geral',
+          tabBarLabel: 'Geral',  // Rótulo na aba
+          title: 'Geral',  // Título da tela
         }}
       />
     </Tab.Navigator>
   );
-}
+};
+
+// Função para renderizar o ícone padrão das guias
+const getDefaultTabIcon = (route, color, size) => {
+  switch (route.name) {
+    case 'Obras':
+      return <MaterialCommunityIcons name="home" color={color} size={size} />;
+    case 'Apontamentos':
+      return <Foundation name="clipboard-notes" color={color} size={size} />;
+    case 'Notificacoes':
+      return <Ionicons name="notifications" color={color} size={size} />;
+    case 'Geral':
+      return <Ionicons name="ios-open" color={color} size={size} />;
+    default:
+      return null;
+  }
+};
+
+// Componente para renderizar o botão flutuante na guia "Adicionar"
+const NewTabButton = () => {
+  return (
+    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <New />
+    </View>
+  );
+};
+
+// Exporta o componente TabRoutes
+export default TabRoutes;
