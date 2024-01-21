@@ -1,67 +1,72 @@
+// Importa as bibliotecas
 import React from "react";
-import { SafeAreaView, View, TouchableOpacity, Text, StyleSheet} from "react-native";
+import { Modal, TouchableOpacity, Text, StyleSheet, View } from "react-native";
 
-export function ActionModal({handleClose, handleObra, handleMessage}) {
-    return (
-      <SafeAreaView style={styles.container}> 
-        <TouchableOpacity style={{flex:1, zIndex:9}} onPress={handleClose} ></TouchableOpacity>
+// Componente funcional ActionModal para lidar com o modal e os botões
+export function ActionModal({ visible, handleClose, handleFormObra, handleMensagem }) {
+  return (
+    <Modal
+      visible={visible}
+      transparent={true}
+      onRequestClose={handleClose}
+      animationType="slide"
+    >
+      {/* Container do modal */}
+      <View style={styles.modalContainer}>
+        {/* Fundo transparente do modal - fecha o modal quando tocado */}
+        <TouchableOpacity style={styles.modalBackground} onPress={handleClose}>
+          <Text style={styles.modalText}>Toque fora para fechar</Text>
+        </TouchableOpacity>
 
-        <View style={styles.content}>
-            <TouchableOpacity
-                //activeOpacity={0.9}
-                style={styles.actionModalButton}
-                //onPress={ () => {}}
-                //onPress={() => alert("Teste")}
-                onPress={handleObra}
-                
-            >
-                <Text style={styles.actionModalText}>Nova obra</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                //activeOpacity={0.9}
-                style={styles.actionModalButton}
-                onPress={handleMessage}
-                
-            >
-                <Text style={styles.actionModalText}>Comentário</Text>
-            </TouchableOpacity>
-
+        {/* Conteúdo do modal */}
+        <View style={styles.modalContent}>
+          {/* Botão dentro do modal para nova obra */}
+          <TouchableOpacity style={styles.actionButton} onPress={handleFormObra}>
+            <Text style={styles.actionText}>Nova Obra</Text>
+          </TouchableOpacity>
+          {/* Botão dentro do modal para comentário */}
+          <TouchableOpacity style={styles.actionButton} onPress={handleMensagem}>
+            <Text style={styles.actionText}>Comentário</Text>
+          </TouchableOpacity>
         </View>
-      </SafeAreaView>
-    );
-  }
-  
+      </View>
+    </Modal>
+  );
+}
 
 const styles = StyleSheet.create({
-    container:{
-        flex: 1,
-    },
-    content:{
-        marginVertical:20,
-        marginLeft: 10,
-        marginRight: 10,
-    },
-    actionModalButton:{
-        zIndex:99,
-        backgroundColor: '#FFF',
-        borderRadius: 6,
-        marginTop: 8,
-        padding: 8,
-        borderWidth: 1,
-        borderBlockColor: 'rgba(0,0,0,0.2)',
-        shadowColor:'rgba(0,0,0,0.3)',
+  // Estilos do componente
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  modalBackground: {
+    flex: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 16,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  actionButton: {
+    backgroundColor: '#0B006B',
+    borderRadius: 6,
+    marginTop: 8,
+    padding: 12,
+    alignItems: 'center',
+  },
+  actionText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  modalText: {
+    color: '#fff',
+    textAlign: 'center',
+    padding: 8,
+  },
+});
 
-        shadowOffset: {
-            width:0,
-            height:2,
-        },
-        elevation: 5,
-        shadowOpacity: 0.28,
-        shadowRadius: 4,
-    },
-    actionModalText:{
-        textAlign: 'center',
-        fontWeight: 'bold'
-    }
-})
+export default ActionModal;
